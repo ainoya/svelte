@@ -17,6 +17,8 @@ module Svelte
       # @note Either `url` or `json` need to be provided. `url` will take
       #   precedence over `json`
       def create(url:, json:, module_name:, options:)
+        Svelte.check_args!(url: url, json: json)
+
         json = get_json(url: url) if url
         SwaggerBuilder.new(raw_hash: JSON.parse(json.to_s),
                            module_name: module_name,
@@ -24,6 +26,7 @@ module Svelte
       end
 
       private
+
 
       def get_json(url:)
         Faraday.get(url).body
