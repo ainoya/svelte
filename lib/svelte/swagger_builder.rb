@@ -11,6 +11,7 @@ module Svelte
     def initialize(raw_hash:, module_name:, options:)
       @raw_hash = raw_hash
       @module_name = module_name
+      @raw_hash['host'] = options[:host] if options[:host]
       @configuration = build_configuration(options)
       validate
     end
