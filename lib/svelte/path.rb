@@ -23,7 +23,7 @@ module Svelte
 
     def to_url_path(parameters:)
       parameters.inject(@path) do |path, (k, v)|
-        path.sub(/{#{k}}/, v)
+        path.sub(/{#{k}}/, v.to_s)
       end
     end
 
