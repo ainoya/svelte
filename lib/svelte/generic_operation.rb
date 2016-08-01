@@ -26,11 +26,8 @@ module Svelte
       private
 
       def url_for(configuration:, path:, parameters:)
-        url_path =
-          [
-            path.non_parameter_elements,
-            named_parameters(path: path, parameters: parameters)
-          ].flatten.join('/')
+        validate_parameters(path: path, parameters: parameters)
+        url_path = path.to_url_path(parameters: parameters)
 
         protocol = configuration.protocol
         host = configuration.host
@@ -38,10 +35,10 @@ module Svelte
         if base_path == '/'
           base_path = ''
         end
-        "#{protocol}://#{host}#{base_path}/#{url_path}"
+        File.join("#{protocol}://#{host}#{base_path}", url_path)
       end
 
-      def named_parameters(path:, parameters:)
+      def validate_parameters(path:, parameters:)
         path.parameter_elements.map do |parameter_element|
           unless parameters.key?(parameter_element)
             raise ParameterError,

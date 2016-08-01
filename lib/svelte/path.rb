@@ -21,6 +21,12 @@ module Svelte
       end
     end
 
+    def to_url_path(parameters:)
+      parameters.inject(@path) do |path, (k, v)|
+        path.sub(/{#{k}}/, v)
+      end
+    end
+
     private
 
     def separate_path_elements
